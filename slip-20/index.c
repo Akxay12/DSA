@@ -1,0 +1,132 @@
+
+// Slip 20 
+ 
+// Q.1) Write a C program to sort an array using insertion sort method.
+
+#include <stdio.h> 
+Insertsort(int x[],int n)
+{
+    int next, i, newelement;
+    for (next = 1; next < n; ++next)
+    {
+        newelement = x[next];
+        for (i = next - 1; i >= 0 && newelement < x[i]; i--)
+        {
+            x[i + 1] = x[i];
+        }
+        x[i + 1] = newelement;
+    }
+}
+int main()
+{
+    int x[20], n, i;
+    printf("\n\n--------------Insertion Sort--------------------\n\n");
+    printf("\n Enter how many number u want to enter :----> ");
+    scanf("%d", &n);
+    printf("\n\n Enter all array element\n\n");
+    for (i = 0; i < n; ++i)
+    {
+        scanf("%d", &x[i]);
+    }
+    Insertsort(x, n);
+printf("\n\n--------------------The Sorted array --------------\n\n"); 
+for(i=0;i<n;++i) 
+{
+            printf("%d ", x[i]); 
+}
+}
+
+// Q.2) Write a C program to convert an infix expression to a postfix 
+// expression.
+
+#include <stdio.h>
+#define MAX 5
+#define EMPTY -1
+#define FULL MAX - 1 
+  typedef struct stk
+{
+    int top;
+    int item[MAX];
+} stack;
+void initstack(stack * ps)
+{
+    ps->top = -1;
+}
+int isempty(stack * ps)
+{
+    return (ps->top == EMPTY);
+}
+int isfull(stack * ps)
+{
+    return (ps->top == FULL);
+}
+void push(stack * ps, int n)
+{
+    if (isfull(ps))
+    {
+        printf("\n stack full");
+    }
+    else
+    {
+        ++ps->top;
+        ps->item[ps->top] = n;
+    }
+}
+int pop(stack * ps)
+{
+    int n1;
+    n1 = ps->item[ps->top];
+    ps->top--;
+    return n1;
+}
+void postfix(char in[], char post[])
+{
+    int i, j = 0;
+    char ch;
+    stack s1;
+    initstack(&s1);
+    for (i = 0; in[i] != '\0'; i++)
+    {
+        if (isalpha(in[i]))
+        {
+            post[j] = in[i];
+            j++;
+        }
+        else
+        {
+            switch (in[i])
+            {
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+            case '%':
+            case '(':
+                push(&s1, in[i]);
+                break;
+            case ')':
+                while ((ch = pop(&s1)) != '(')
+                {
+                    post[j] = ch;
+                    j++;
+                }
+            }
+        }
+    }
+    while (!isempty(&s1))
+    {
+        post[j] = pop(&s1);
+        j++;
+    }
+    post[j] = '\0';
+}
+void main()
+{
+    char in[20], post[20];
+    printf("\n Enter Infix string : ");
+    scanf("%s", in);
+    fflush(stdin);
+    postfix(in, post); //--------------- postfix conversions
+    printf(" \n Postfix sring is ");
+    printf("%s", post);
+}
